@@ -24,7 +24,7 @@ var app = express();
 MongoDB user details :
 username : crespoter
 password : blanserver
-*/
+*/  
 MongoClient.connect("mongodb://crespoter:blanserver@ds157233.mlab.com:57233/farmer_details", (err, database) => {
     if (err)
         console.log(err);
@@ -48,6 +48,8 @@ app.get('/', (req, res) => {
 //REST API to return list of all villages
 app.get('/villagelist', (req, res) => {
     db.collection("villages").find().toArray((err, results) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.json(results);
     });
 });
@@ -62,7 +64,10 @@ app.get('/villagelist', (req, res) => {
 app.get('/villageidlookup/:villageid', (req, res) => {
     db.collection("villages").find({ _id: ObjectID(req.params.villageid) }).toArray((err, results) => {
         var retJson = {};
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         if (results.length == 0) {
+
             retJson.success = false;
             res.json(retJson);
         }
@@ -88,6 +93,8 @@ app.get('/villageidlookup/:villageid', (req, res) => {
 */
 app.get('/profit/village/:villageid', (req, res) => {
     console.log(req.params.villageid);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("profit").find({ village_id: req.params.villageid}).toArray((err, results) => {
         var retJson = {};
         if (results.length == 0) {
@@ -115,6 +122,8 @@ app.get('/profit/village/:villageid', (req, res) => {
 
 app.get('/profit/person/:username', (req, res) => {
     db.collection("profit_person").find({ person_username: req.params.username }).toArray((err, results) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         var retJson = {};
         if (results.length == 0) {
             retJson.success = false;
@@ -140,6 +149,8 @@ app.get('/profit/person/:username', (req, res) => {
         profit : profit gained during this period        
 */
 app.get('/profit/all', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("profit_all").find().toArray((err, results) => {
         retJson = {
             village_info: results
@@ -161,6 +172,8 @@ app.get('/profit/all', (req, res) => {
         area : area that crop was cultivated
 */
 app.get('/cropcultivated/all', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("crop_cultivated").find().toArray((err, results) => {
         retJson = {
             crops: results
@@ -180,6 +193,8 @@ app.get('/cropcultivated/all', (req, res) => {
         area : area that crop was cultivated
 */
 app.get('/cropcultivated/village/:villageid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("crop_cultivated_village").find({ "village_id": req.params.villageid }).toArray((err, results) => {
         retJson = {
             crops: results
@@ -200,6 +215,8 @@ app.get('/cropcultivated/village/:villageid', (req, res) => {
         area : area that crop was cultivated
 */
 app.get('/cropcultivated/person/:username', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("crop_cultivated_person").find({ "username": req.params.username }).toArray((err, results) => {
         retJson = {
             crops: results
@@ -219,6 +236,8 @@ app.get('/cropcultivated/person/:username', (req, res) => {
         loss : loss made by that pest
 */
 app.get('/pests/all', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("pest_all").find().toArray((err, results) => {
         retJson = {
             pests: results
@@ -238,6 +257,8 @@ app.get('/pests/all', (req, res) => {
         loss : loss made by that pest in INR
 */
 app.get('/pests/village/:villageid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("pest_village").find({ "village_id": req.params.villageid }).toArray((err, results) => {
         retJson = {
             pests: results
@@ -258,6 +279,8 @@ app.get('/pests/village/:villageid', (req, res) => {
         loss : loss made by that pest in INR
 */
 app.get('/pests/person/:username', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("pest_person").find({ "username": req.params.username }).toArray((err, results) => {
         retJson = {
             oests: results
@@ -278,6 +301,8 @@ app.get('/pests/person/:username', (req, res) => {
         area : area of that type
 */
 app.get('/land/all', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("land_all").find().toArray((err, results) => {
         retJson = {
             land: results
@@ -297,6 +322,8 @@ app.get('/land/all', (req, res) => {
         area : area of that type
 */
 app.get('/land/village/:villageid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("land_village").find({ "village_id": req.params.villageid }).toArray((err, results) => {
         retJson = {
             land: results
@@ -317,6 +344,8 @@ app.get('/land/village/:villageid', (req, res) => {
         area : area of that type
 */
 app.get('/land/person/:username', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("land_person").find({ "username": req.params.username }).toArray((err, results) => {
         retJson = {
             land: results
@@ -329,6 +358,8 @@ app.get('/land/person/:username', (req, res) => {
 
 //    FOR SUBMISSION ON 31- August
 app.get('/householddetails/:id', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("Household").find({ "_id": ObjectID(req.params.id) }).toArray((err, results) => {
         if (results.length == 0)
         {
@@ -345,6 +376,8 @@ app.get('/householddetails/:id', (req, res) => {
 });
 
 app.get('/member/:name', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("Member").find({ "name": req.params.name }).toArray((err, results) => {
         if (results.length == 0) {
             res.json({ "success": false });
@@ -359,6 +392,8 @@ app.get('/member/:name', (req, res) => {
 });
 
 app.get('/farms/:householdid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("Farms").find({ household_id: req.params.householdid }).toArray((err, results) => {
         if (results.length == 0) {
             res.json({ "success": false });
@@ -373,6 +408,8 @@ app.get('/farms/:householdid', (req, res) => {
 });
 
 app.get('/farms/location/:farmid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("Farms_area").find({ farm_id: req.params.farmid }).toArray((err, results) => {
         if (results.length == 0) {
             res.json({ "success": false });
@@ -387,6 +424,8 @@ app.get('/farms/location/:farmid', (req, res) => {
 });
 
 app.get('/crops/:farmid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("Crops").find({farm_id: req.params.farmid }).toArray((err, results)=>{
         if (results.length == 0) {
             res.json({ "success": false });
@@ -402,6 +441,8 @@ app.get('/crops/:farmid', (req, res) => {
 
 
 app.get('/wells/:farmid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("Wells").find({farm_id: req.params.farmid }).toArray((err, results) => {
         if (results.length == 0) {
             res.json({ "success": false });
@@ -417,6 +458,8 @@ app.get('/wells/:farmid', (req, res) => {
 
 
 app.get('/wells/wateryield/:wellid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("Water_yield").find({ well_id: req.params.wellid }).toArray((err, results) => {
         if (results.length == 0) {
             res.json({ "success": false });
@@ -436,6 +479,8 @@ app.get('/wells/wateryield/:wellid', (req, res) => {
 
 
 app.get('/all/:name', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var retJson = {};
     db.collection("Member").find({ "name": req.params.name }).toArray((err, results) => {
         if (results.length == 0) {
@@ -523,6 +568,8 @@ app.post('/upload', upload.single('userPhoto'),function (req, res) {
 });
 
 app.get('/householdimage/:hid', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     db.collection("household_images").find({ hid: req.params.hid }).toArray((err, data)=>{
         res.sendFile('/upload/' + data[0].filename, { root: 'public' });
     });
